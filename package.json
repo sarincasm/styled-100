@@ -1,0 +1,33 @@
+{
+	"name": "css100",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sarincasm/css100.git"
+	},
+	"author": "",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/sarincasm/css100/issues"
+	},
+	"homepage": "https://github.com/sarincasm/css100#readme",
+	"dependencies": {
+		"grommet": "^2.12.0",
+		"next": "^9.3.4",
+		"polished": "^3.5.1",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"styled-components": "^5.1.0"
+	},
+	"devDependencies": {
+		"babel-plugin-styled-components": "^1.10.7"
+	}
+}
