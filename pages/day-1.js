@@ -1,138 +1,79 @@
 /** @format */
-/**
- * https://codepen.io/roydigerhund/pen/ZQmbNm
- */
 
-import {useState, useEffect} from 'react'
-import styled, {css, keyframes} from 'styled-components'
+import styled from 'styled-components'
 
 import Frame from '../components/Frame'
 import Center from '../components/Center'
 
-const menuIconLineHeight = 8
-const menuIconLineSpace = 14
-
-const menuIconLineOffsetY = menuIconLineHeight + menuIconLineSpace
-const menuIconHeight = 3 * menuIconLineHeight + 2 * menuIconLineSpace
-
-const animationDuration = 0.7
-
-const MenuIcon = styled.div`
-	width: 80px;
-	height: ${menuIconHeight}px;
-	cursor: pointer;
+const color1 = '#00CC03'
+const color2 = 'black'
+const GradientFrame = styled(Frame)`
+	background: ${color1};
+	background: linear-gradient(
+		to top right,
+		${color1} 25%,
+		${color2} 85%,
+		${color1} 98%
+	);
 `
 
-const Line = styled.div`
-	height: ${menuIconLineHeight}px;
-	width: 100%;
-	background-color: #fff;
+const Number = styled.div`
+	height: 100px;
+	width: 200px;
+`
+const One = styled.div`
+	position: absolute;
+	left: 12px;
+	top: 2px;
+	height: 98px;
+	width: 24px;
+	background: #fff;
 	border-radius: 3px;
-	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
-
-	animation: ${(props) =>
-		animationSelect({
-			position: props.position,
-		})};
-	animation-fill-mode: forwards;
-	animation-play-state: ${(props) => props.animationState || 'paused'};
+	box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.2);
+`
+const Zero = styled.div`
+	position: absolute;
+	left: 30px;
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	box-sizing: border-box;
+	border: 25px solid ${color2};
+	box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.2);
+`
+const SecondZero = styled(Zero)`
+	left: 100px;
+	border: 25px solid #fff;
 `
 
-const LineTopAnimation = keyframes`
-0% {
-	transform: translateY(0) rotate(0);
-	background-color: #fff;
-}
- 50% {
-	transform: translateY(${menuIconLineOffsetY}px) rotate(0);
-}
-100% {
-	transform: translateY(${menuIconLineOffsetY}px) rotate(45deg);
-	background-color: red;
-}
+const BigText = styled.div`
+	font-size: 82px;
+	line-height: 60px;
+	text-transform: uppercase;
+	font-weight: 700;
+	margin: 6px 0 9px 0;
+	text-align: center;
 `
-const LineMiddleAnimation = keyframes`
-0% {
-	transform: scale(1);
-	opacity: 1;
-}
-100% {
-	transform: scale(0);
-	opacity: 0;
-}
-
-`
-const LineBottomAnimation = keyframes`
-0% {
-	transform: translateY(0) rotate(0);
-}
- 50% {
-	transform: translateY(-${menuIconLineOffsetY}px) rotate(0);
-}
-100% {
-	transform: translateY(-${menuIconLineOffsetY}px) rotate(135deg);
-	background-color: red;
-}
-`
-
-function animationSelect({position}) {
-	switch (position) {
-		case 'top':
-			return css`
-				${LineTopAnimation} ${animationDuration}s ease-in-out 0s infinite alternate;
-			`
-		case 'middle':
-			return css`
-				${LineMiddleAnimation} ${animationDuration}s ease-in-out 0s infinite alternate;
-			`
-		case 'bottom':
-			return css`
-				${LineBottomAnimation} ${animationDuration}s ease-in-out 0s infinite alternate;
-			`
-	}
-}
-
-const LineMiddle = styled(Line)`
-	margin: ${menuIconLineSpace}px 0;
+const SmallText = styled.div`
+	font-size: 23px;
+	line-height: 22px;
+	text-transform: uppercase;
+	font-weight: 700;
+	text-align: center;
 `
 
 export default function Day1() {
-	const [animationState, setAnimationState] = useState('paused')
-	const [childrenDone, setChildrenDone] = useState(0)
-
-	useEffect(() => {
-		if (childrenDone === 3 && animationState === 'running') {
-			setAnimationState('paused')
-			setChildrenDone(0)
-		}
-	})
-
 	return (
-		<Frame>
+		<GradientFrame>
 			<Center>
-				<MenuIcon
-					onClick={() => {
-						setAnimationState('running')
-					}}
-					onAnimationStart={() => {
-						if (animationState === 'running') {
-							setChildrenDone(childrenDone + 1)
-						}
-					}}
-					onAnimationIteration={() => {
-						if (animationState === 'running') {
-							setChildrenDone(childrenDone + 1)
-						}
-					}}
-				>
-					<Line animationState={animationState} position={'top'} />
-					<LineMiddle
-						animationState={animationState}
-						position={'middle'}
-					/>
-					<Line animationState={animationState} position={'bottom'} />
-				</MenuIcon>
+				<Number>
+					<One />
+					<Zero />
+					<SecondZero />
+				</Number>
+				<BigText>Days</BigText>
+				<SmallText>CSS Challenge</SmallText>
 			</Center>
-		</Frame>
+		</GradientFrame>
 	)
 }
