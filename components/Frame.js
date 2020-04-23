@@ -2,6 +2,7 @@
 
 import styled from 'styled-components'
 
+export const FrameColor = '#333'
 const Frame = styled.div`
 	position: absolute;
 	top: 50%;
@@ -13,7 +14,7 @@ const Frame = styled.div`
 	border-radius: 25px;
 	box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.3);
 	overflow: hidden;
-	background: #333;
+	background: ${FrameColor};
 	color: #fff;
 `
 
