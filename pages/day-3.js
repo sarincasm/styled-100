@@ -19,22 +19,13 @@ const Circle = styled.div`
 `
 
 const SkyAnimation = keyframes`
-0% {
+0%, 10% {
   background: ${FrameColor};
 }
-10% {
-  background: ${FrameColor};
-}
-30% {
+30%, 70% {
   background: ${colorOfSky};
 }
-70% {
-  background: ${colorOfSky};
-}
-90% {
-  background: ${FrameColor};
-}
-100% {
+90%, 100% {
   background: ${FrameColor};
 }
 `
@@ -47,22 +38,13 @@ const Sky = styled.div`
 	animation: ${SkyAnimation} 8s linear infinite;
 `
 const GroundAnimation = keyframes`
-0% {
+0%, 10% {
   background: ${FrameColor};
 }
-10% {
-  background: ${FrameColor};
-}
-30% {
+30%, 70% {
   background: ${colorOfGround};
 }
-70% {
-  background: ${colorOfGround};
-}
-90% {
-  background: ${FrameColor};
-}
-100% {
+90%, 100% {
   background: ${FrameColor};
 }
 `
@@ -113,10 +95,7 @@ const Sun = styled.div`
 `
 
 const PyramidAnimation = keyframes`
-0% {
-  background: ${FrameColor};
-}
-10% {
+0%, 10% {
   background: ${FrameColor};
 }
 40% {
@@ -125,10 +104,7 @@ const PyramidAnimation = keyframes`
 75% {
   background: ${colorOfPyramidDark};
 }
-90% {
-  background: ${FrameColor};
-}
-100% {
+90%, 100% {
   background: ${FrameColor};
 }
 `
@@ -156,12 +132,7 @@ const PyramidRight = styled.div`
 const ClipLeftVertex = '115px'
 const ClipRightVertex = '230px'
 const ShadowAnimation = keyframes`
-0% {
-  transform: scaleY(0);
-  clip-path: polygon(${ClipLeftVertex} 0%, ${ClipRightVertex} 0%, 100% 100%);
-  background: rgba(0, 0, 0, 0.1);
-}
-10% {
+0%, 10% {
   transform: scaleY(0);
   clip-path: polygon(${ClipLeftVertex} 0%, ${ClipRightVertex} 0%, 100% 100%);
   background: rgba(0, 0, 0, 0.1);
@@ -171,11 +142,7 @@ const ShadowAnimation = keyframes`
   clip-path: polygon(${ClipLeftVertex} 0%, ${ClipRightVertex} 0%, 80% 100%);
   background: rgba(0, 0, 0, 0.2);
 }
-52.5% {
-  transform: scaleY(.7);
-  background: rgba(0, 0, 0, 0.3);
-}
-57.5% {
+52.5%, 57.5% {
   transform: scaleY(.7);
   background: rgba(0, 0, 0, 0.3);
 }
@@ -183,12 +150,7 @@ const ShadowAnimation = keyframes`
   transform: scaleY(1);
   background: rgba(0, 0, 0, 0.2);
 }
-90% {
-  transform: scaleY(0);
-  clip-path: polygon(${ClipLeftVertex} 0%, ${ClipRightVertex} 0%, 0% 100%);
-  background: rgba(0, 0, 0, 0.1);
-}
-100% {
+90%, 100% {
   transform: scaleY(0);
   clip-path: polygon(${ClipLeftVertex} 0%, ${ClipRightVertex} 0%, 0% 100%);
   background: rgba(0, 0, 0, 0.1);
