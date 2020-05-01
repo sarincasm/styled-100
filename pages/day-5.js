@@ -5,6 +5,10 @@ import styled from 'styled-components'
 import Frame from '../components/Frame'
 import Center from '../components/Center'
 
+const color1 = '#999173'
+const color2 = '#33CCB7'
+const colorCard = '#CCAC33'
+
 const Card = styled.div`
 	position: absolute;
 	transform: translate(-50%, -50%);
@@ -19,7 +23,7 @@ const Header = styled.div`
 	position: relative;
 	height: 60px;
 	width: 100%;
-	background: orange;
+	background: ${colorCard};
 	color: #fff;
 	padding-top: 5px;
 `
@@ -63,11 +67,11 @@ const LegendSpan = styled.span`
 	&::before {
 		position: absolute;
 		left: 2px;
-		top: 9px;
+		top: 8px;
 		display: block;
 		content: '';
 		width: 15px;
-		height: 3px;
+		height: 3.5px;
 		border-radius: 5px;
 		background: ${(props) => props.legendColor};
 	}
@@ -75,7 +79,7 @@ const LegendSpan = styled.span`
 
 const Chart = styled.div`
 	position: relative;
-	height: 81px;
+	height: 80px;
 	width: 260px;
 	margin: 0 auto;
 `
@@ -95,6 +99,7 @@ const Polyline = styled.polyline`
 
 const Points = styled.div``
 const Point = styled.div`
+	z-index: 1;
 	position: absolute;
 	width: 6px;
 	height: 6px;
@@ -105,14 +110,48 @@ const Point = styled.div`
 	background: ${(props) => props.color};
 `
 
+const Tooltip = styled.div`
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 5px);
+	font-weight: 600;
+	font-size: 0.7em;
+	line-height: 0.8em;
+	background: ${(props) => props.color};
+	color: #fff;
+	padding: 8px 6px;
+	border-radius: 3px;
+	opacity: 0;
+	transition: transform 0.4s ease-out 0s, opacity 0.4s ease-out 0s;
+
+	&::after {
+		position: absolute;
+		display: block;
+		content: '';
+		background: ${(props) => props.color};
+		height: 6px;
+		width: 6px;
+		left: 50%;
+		margin-left: -3px;
+		bottom: -2px;
+		transform: rotate(45deg);
+	}
+
+	${Point}:hover & {
+		opacity: 1;
+		transform: translate(-50%, -10px);
+	}
+`
+
 const Days = styled.div`
 	display: flex;
-	padding: 0 10px;
+	padding: 0 8px;
 `
 const Day = styled.div`
 	display: block;
 	flex: 1 1 0px;
-	font-size: 9px;
+	font-size: 0.55em;
 	color: rgba(0, 0, 0, 0.7);
 	line-height: 30px;
 	text-transform: uppercase;
@@ -160,7 +199,9 @@ export default function Day5() {
 								x={coordinate.x}
 								y={coordinate.y}
 								color={color}
-							></Point>
+							>
+								<Tooltip color={color}>{100 - coordinate.y}</Tooltip>
+							</Point>
 						)
 					})}
 				</Points>
@@ -183,16 +224,16 @@ export default function Day5() {
 						</Amount>
 					</Header>
 					<Legend>
-						<LegendSpan legendColor="red">Views</LegendSpan>
-						<LegendSpan legendColor="blue">Purchases</LegendSpan>
+						<LegendSpan legendColor={color1}>Views</LegendSpan>
+						<LegendSpan legendColor={color2}>Purchases</LegendSpan>
 					</Legend>
 					<Chart>
 						{renderChart({
-							color: 'red',
+							color: color1,
 							Ymin: 20,
 						})}
 						{renderChart({
-							color: 'blue',
+							color: color2,
 							Ymin: 35,
 						})}
 					</Chart>
