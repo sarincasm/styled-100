@@ -21,6 +21,7 @@
 	"homepage": "https://github.com/sarincasm/css100#readme",
 	"dependencies": {
 		"grommet": "^2.12.0",
+		"grommet-icons": "^4.4.0",
 		"next": "^9.3.4",
 		"polished": "^3.5.1",
 		"react": "^16.13.1",

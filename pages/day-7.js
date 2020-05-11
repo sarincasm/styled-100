@@ -5,17 +5,29 @@ import styled from 'styled-components'
 import Frame from '../components/Frame'
 import Center from '../components/Center'
 
+import {
+	Search,
+	Dashboard,
+	User,
+	Chat,
+	Configure,
+	Notification,
+} from 'grommet-icons'
+import {useState} from 'react'
+
 const Panel = styled.div`
+	z-index: 2;
 	position: absolute;
 	height: 320px;
 	width: 300px;
 	background: #fff;
-	transform: translate(-50%, -50%);
 	border-radius: 10px;
 	overflow: hidden;
 	box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.2);
 	transition: all 0.5s ease-in-out;
 	color: black;
+	transform: ${(props) =>
+		props.isMenuActive ? 'translate(5%, -50%)' : 'translate(-50%, -50%)'};
 `
 
 const Header = styled.div`
@@ -32,6 +44,10 @@ const MenuIcon = styled.div`
 	top: 35%;
 	left: 7%;
 	cursor: pointer;
+	opacity: ${(props) => (props.active ? 1 : 0.7)};
+	&:hover {
+		opacity: 1;
+	}
 `
 const MenuIconTop = styled.div`
 	position: absolute;
@@ -71,6 +87,36 @@ const Title = styled.div`
 	font-size: 15px;
 `
 
+const SearchIcon = styled(Search)`
+	position: absolute;
+	top: 18px;
+	right: 20px;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	opacity: ${(props) => (props.active ? 1 : 0.7)};
+	&:hover {
+		opacity: 1;
+	}
+`
+const SearchInput = styled.input`
+	box-sizing: border-box;
+	position: absolute;
+	top: 20%;
+	right: 55px;
+	width: 230px;
+	height: 60%;
+	border-radius: 20px;
+	border: none;
+	background: #fff;
+	padding: 0 20px;
+	font-size: 1.1em;
+	transition: all 0.3s ease-in-out;
+	transform: ${(props) =>
+		props.active ? 'translateX()' : 'translateX(15px)'};
+	opacity: ${(props) => (props.active ? 1 : 0)};
+	pointer-events: ${(props) => (props.active ? 'default' : 'none')};
+`
+
 const Body = styled.div`
 	position: absolute;
 	top: 20%;
@@ -86,7 +132,7 @@ const TimelineLine = styled.div`
 	background: black;
 `
 
-const Notification = styled.div`
+const NotificationDiv = styled.div`
 	position: relative;
 	margin: 25px 20px 25px 43px;
 `
@@ -113,7 +159,46 @@ const NotificationText = styled.div`
 	line-height: 1.1em;
 `
 
+const Menu = styled.div`
+	position: absolute;
+	width: 180px;
+	height: 300px;
+	top: -150px;
+	left: -150px;
+	background: #43627d;
+	border-radius: 8px;
+	transition: all 0.6s ease-in-out;
+	transform: ${(props) =>
+		props.active ? 'translateX(0)' : 'translateX(50px)'};
+`
+const List = styled.ul`
+	padding: 2px 0;
+`
+const MenuItem = styled.li`
+	color: #93b2cd;
+	margin: 5px 0;
+	padding: 23px 17px;
+	list-style: none;
+	font-size: 16px;
+	line-height: 16px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+
+	&:hover {
+		color: #fff;
+		background: #385269;
+	}
+
+	span {
+		float: left;
+		margin-right: 8px;
+		transform: translateY(-50%);
+	}
+`
+
 export default function Day() {
+	const [isSearchActive, setSearchState] = useState(false)
+	const [isMenuActive, setMenuState] = useState(false)
 	const notificationsData = [
 		{
 			time: '5 hours ago',
@@ -131,36 +216,96 @@ export default function Day() {
 			text: `said hi. Don't reply.`,
 		},
 	]
+	const menuItems = [
+		{
+			label: 'Dashboard',
+			icon: Dashboard,
+		},
+		{
+			label: 'Profile',
+			icon: User,
+		},
+		{
+			label: 'Notifications',
+			icon: Notification,
+		},
+		{
+			label: 'Messages',
+			icon: Chat,
+		},
+		{
+			label: 'Settings',
+			icon: Configure,
+		},
+	]
 
 	function renderNotification(data) {
 		return (
-			<Notification key={data.time}>
+			<NotificationDiv key={data.time}>
 				<NotificationBullet />
 				<NotificationTime>{data.time}</NotificationTime>
 				<NotificationText>
 					<b>{data.from}</b> {data.text}
 				</NotificationText>
-			</Notification>
+			</NotificationDiv>
+		)
+	}
+
+	function renderMenuItem(item) {
+		const Icon = styled(item.icon)`
+			opacity: 0.6;
+			transition: all 0.3s ease-in-out;
+			${MenuItem}:hover & {
+				opacity: 1;
+			}
+		`
+		return (
+			<MenuItem key={item.label}>
+				<span>
+					<Icon color="white" />
+				</span>
+				<span>{item.label}</span>
+			</MenuItem>
 		)
 	}
 	return (
 		<Frame>
 			<Center>
-				<Panel>
+				<Panel isMenuActive={isMenuActive}>
 					<Header>
-						<MenuIcon>
+						<MenuIcon
+							active={isMenuActive}
+							onClick={() => {
+								setMenuState(!isMenuActive)
+							}}
+						>
 							<MenuIconTop />
 							<MenuIconCircle />
 							<MenuIconMiddle />
 							<MenuIconBottom />
 						</MenuIcon>
 						<Title>Notifications</Title>
+						<SearchIcon
+							color="white"
+							active={isSearchActive}
+							onClick={() => {
+								setSearchState(!isSearchActive)
+							}}
+						/>
+						<SearchInput
+							active={isSearchActive}
+							type="text"
+							placeholder="Search"
+						/>
 					</Header>
 					<Body>
 						<TimelineLine />
 						{notificationsData.map(renderNotification)}
 					</Body>
 				</Panel>
+				<Menu active={isMenuActive}>
+					<List>{menuItems.map(renderMenuItem)}</List>
+				</Menu>
 			</Center>
 		</Frame>
 	)
