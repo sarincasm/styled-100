@@ -1,6 +1,6 @@
 /** @format */
 
-import styled from 'styled-components'
+import styled, {keyframes, css} from 'styled-components'
 
 import Frame from '../components/Frame'
 import Center from '../components/Center'
@@ -12,8 +12,11 @@ import {
 	Chat,
 	Configure,
 	Notification,
+	Close,
 } from 'grommet-icons'
 import {useState} from 'react'
+
+const colors = ['#A39CFF', '#8E9EE8', '#9CFDFF', '#4D3DEB', '#992BFF']
 
 const Panel = styled.div`
 	z-index: 2;
@@ -25,7 +28,6 @@ const Panel = styled.div`
 	overflow: hidden;
 	box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.2);
 	transition: all 0.5s ease-in-out;
-	color: black;
 	transform: ${(props) =>
 		props.isMenuActive ? 'translate(5%, -50%)' : 'translate(-50%, -50%)'};
 `
@@ -34,7 +36,7 @@ const Header = styled.div`
 	position: absolute;
 	height: 20%;
 	width: 100%;
-	background: blue;
+	background: ${colors[0]};
 `
 
 const MenuIcon = styled.div`
@@ -87,7 +89,7 @@ const Title = styled.div`
 	font-size: 15px;
 `
 
-const SearchIcon = styled(Search)`
+const SearchIcon = styled.div`
 	position: absolute;
 	top: 18px;
 	right: 20px;
@@ -110,6 +112,7 @@ const SearchInput = styled.input`
 	background: #fff;
 	padding: 0 20px;
 	font-size: 1.1em;
+	color: ${colors[4]};
 	transition: all 0.3s ease-in-out;
 	transform: ${(props) =>
 		props.active ? 'translateX()' : 'translateX(15px)'};
@@ -128,13 +131,28 @@ const TimelineLine = styled.div`
 	top: 0;
 	left: 27px;
 	height: 100%;
-	width: 1px;
-	background: black;
+	width: 2px;
+	background: ${colors[0]};
 `
 
+const NotificationAnimation = keyframes`
+from {
+		transform: translateY(50px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+`
 const NotificationDiv = styled.div`
 	position: relative;
 	margin: 25px 20px 25px 43px;
+	animation: ${(props) =>
+		css`
+			${NotificationAnimation} 0.5s ease-out ${props.index * 0.5}s
+		`};
+	animation-fill-mode: both;
 `
 const NotificationBullet = styled.div`
 	z-index: 2;
@@ -143,7 +161,7 @@ const NotificationBullet = styled.div`
 	height: 11px;
 	width: 11px;
 	background: #fff;
-	border: 1.25px solid blue;
+	border: 1.5px solid ${colors[0]};
 	box-shadow: 0 0 0 1.5px #fff;
 	border-radius: 6px;
 	top: 0;
@@ -153,10 +171,12 @@ const NotificationTime = styled.div`
 	font-size: 0.65em;
 	line-height: 0.65em;
 	margin-bottom: 8px;
+	color: ${colors[3]};
 `
 const NotificationText = styled.div`
 	font-size: 1em;
 	line-height: 1.1em;
+	color: ${colors[4]};
 `
 
 const Menu = styled.div`
@@ -165,7 +185,7 @@ const Menu = styled.div`
 	height: 300px;
 	top: -150px;
 	left: -150px;
-	background: #43627d;
+	background: ${colors[3]};
 	border-radius: 8px;
 	transition: all 0.6s ease-in-out;
 	transform: ${(props) =>
@@ -175,7 +195,7 @@ const List = styled.ul`
 	padding: 2px 0;
 `
 const MenuItem = styled.li`
-	color: #93b2cd;
+	color: ${colors[2]};
 	margin: 5px 0;
 	padding: 23px 17px;
 	list-style: none;
@@ -186,13 +206,20 @@ const MenuItem = styled.li`
 
 	&:hover {
 		color: #fff;
-		background: #385269;
+		background: ${colors[1]};
 	}
 
 	span {
 		float: left;
 		margin-right: 8px;
 		transform: translateY(-50%);
+	}
+`
+const MenuItemIcon = styled.div`
+	opacity: 0.6;
+	transition: all 0.3s ease-in-out;
+	${MenuItem}:hover & {
+		opacity: 1;
 	}
 `
 
@@ -239,9 +266,9 @@ export default function Day() {
 		},
 	]
 
-	function renderNotification(data) {
+	function renderNotification(data, index) {
 		return (
-			<NotificationDiv key={data.time}>
+			<NotificationDiv index={index} key={data.time}>
 				<NotificationBullet />
 				<NotificationTime>{data.time}</NotificationTime>
 				<NotificationText>
@@ -252,17 +279,10 @@ export default function Day() {
 	}
 
 	function renderMenuItem(item) {
-		const Icon = styled(item.icon)`
-			opacity: 0.6;
-			transition: all 0.3s ease-in-out;
-			${MenuItem}:hover & {
-				opacity: 1;
-			}
-		`
 		return (
 			<MenuItem key={item.label}>
 				<span>
-					<Icon color="white" />
+					<MenuItemIcon as={item.icon} color="white" />
 				</span>
 				<span>{item.label}</span>
 			</MenuItem>
@@ -291,6 +311,7 @@ export default function Day() {
 							onClick={() => {
 								setSearchState(!isSearchActive)
 							}}
+							as={isSearchActive ? Close : Search}
 						/>
 						<SearchInput
 							active={isSearchActive}
