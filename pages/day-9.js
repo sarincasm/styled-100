@@ -1,29 +1,29 @@
 /** @format */
 
-import styled, {keyframes} from 'styled-components'
+import styled, {css, keyframes} from 'styled-components'
 
 import Frame from '../components/Frame'
 
 const MoonRiseAnimation = keyframes`
 from {
-		transform: translate(-20px, 200px);
+		transform: translate(-40px, 200px);
 	}
 	to {
 		transform: translate(0, 0px);
 	}
 `
 
-const ColorOfMoon = '#f6edbd'
+const ColorOfMoon = '#F6EDBD'
 const Moon = styled.div`
 	position: absolute;
 	width: 70px;
 	height: 70px;
 	top: 35px;
-	left: 55px;
+	left: 60px;
 	border-radius: 50px;
 	background: ${ColorOfMoon};
 	box-shadow: 0 0 10px 0 ${ColorOfMoon};
-	animation: ${MoonRiseAnimation} 1s ease-out;
+	animation: ${MoonRiseAnimation} 2.5s ease-out;
 `
 const ColorOfMold = '#AB981F'
 const Crater = styled.div`
@@ -48,6 +48,7 @@ const Hill = styled.div`
 	border-radius: 50%;
 `
 
+const InfoTextColor = '#0F3D39'
 const Info = styled.div`
 	position: absolute;
 	z-index: 5;
@@ -56,7 +57,7 @@ const Info = styled.div`
 	left: 0px;
 	bottom: 0px;
 	background: #fff;
-	color: #394568;
+	color: ${InfoTextColor};
 `
 const Temperature = styled.div`
 	float: left;
@@ -79,6 +80,61 @@ const Forecast = styled.div`
 	margin: 25px 20px 0 0;
 	span {
 		padding: 5px;
+	}
+`
+
+const DropAnimation = keyframes`
+	0% {
+		transform: translate(90px, -320px) scaleX(1) scaleY(1) rotate(30deg);
+	}
+	85% {
+		transform: translate(0, 0) scaleX(1) scaleY(1) rotate(30deg);
+	}
+	100% {
+		transform: translate(0, 0) scaleX(3) scaleY(0) rotate(0deg);
+	}
+`
+
+const DropColor = '#3083BF'
+const Drop = styled.div`
+	position: absolute;
+	z-index: 20;
+	left: ${(props) => 30 * props.index + 'px'};
+	opacity: ${(props) => props.opacity};
+	bottom: 90px;
+	width: ${(props) => props.size};
+	height: ${(props) => props.size};
+	border-radius: 50%;
+	background: ${DropColor};
+	animation: ${(props) =>
+		css`${DropAnimation} ${props.baseDuration + props.duration}s linear ${
+			props.delay
+		}s	infinite`};
+	animation-fill-mode: both;
+	transform-origin: 50% 100%;
+
+	&:before {
+		position: absolute;
+		content: '';
+		display: block;
+		top: -2px;
+		left: 1px;
+		width: ${(props) => props.beforeSize};
+		height: ${(props) => props.beforeSize};
+		background: ${DropColor};
+		border-radius: 3px;
+	}
+
+	&:after {
+		position: absolute;
+		content: '';
+		display: block;
+		top: -5px;
+		left: 2px;
+		width: ${(props) => props.afterWidth};
+		height: ${(props) => props.afterHeight};
+		background: ${DropColor};
+		border-radius: 50%;
 	}
 `
 
@@ -113,6 +169,7 @@ export default function Day() {
 			{top: '25px', left: '15px'},
 			{top: '37px', left: '37px'},
 		]
+
 		const sizes = ['6px', '4px', '11px']
 		return positions.map((position, index) => (
 			<Crater
@@ -122,6 +179,58 @@ export default function Day() {
 				size={sizes[index % 3]}
 			/>
 		))
+	}
+	function renderDrops() {
+		const drops = []
+		for (let index = 0; index < 12; index++) {
+			drops.push(
+				<Drop
+					key={index}
+					index={index}
+					baseDuration={0.5}
+					duration={Math.random() * 2}
+					delay={Math.random() * 5}
+					opacity={0.9}
+					size={'11px'}
+					beforeSize={'6px'}
+					afterWidth={'4px'}
+					afterHeight={'10px'}
+				/>
+			)
+		}
+		for (let index = 0; index < 12; index++) {
+			drops.push(
+				<Drop
+					key={index}
+					index={index}
+					baseDuration={1.2}
+					duration={Math.random() * 2}
+					delay={Math.random() * 5}
+					opacity={0.6}
+					size={'7px'}
+					beforeSize={'4px'}
+					afterWidth={'2px'}
+					afterHeight={'6px'}
+				/>
+			)
+		}
+		for (let index = 0; index < 12; index++) {
+			drops.push(
+				<Drop
+					key={index}
+					index={index}
+					baseDuration={1.8}
+					duration={Math.random() * 2}
+					delay={Math.random() * 4}
+					opacity={0.3}
+					size={'4px'}
+					beforeSize={'2px'}
+					afterWidth={'2px'}
+					afterHeight={'4px'}
+				/>
+			)
+		}
+		return drops
 	}
 	return (
 		<Frame>
@@ -142,6 +251,7 @@ export default function Day() {
 					<span>23° / 10°</span>
 				</Forecast>
 			</Info>
+			{renderDrops()}
 		</Frame>
 	)
 }
