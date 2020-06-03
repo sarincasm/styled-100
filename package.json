@@ -22,6 +22,7 @@
 	"dependencies": {
 		"grommet": "^2.12.0",
 		"grommet-icons": "^4.4.0",
+		"moment": "^2.26.0",
 		"next": "^9.3.4",
 		"polished": "^3.5.1",
 		"react": "^16.13.1",
