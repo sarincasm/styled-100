@@ -1,9 +1,14 @@
 /** @format */
+import {useState} from 'react'
 
-import styled from 'styled-components'
+import styled, {keyframes, css, ThemeProvider} from 'styled-components'
+
+import {Phone, Favorite, Chat} from 'grommet-icons'
 
 import Frame from '../components/Frame'
-
+const WhiteFrame = styled(Frame)`
+	background: white;
+`
 const Profile = styled.div`
 	position: relative;
 	float: left;
@@ -70,7 +75,6 @@ const Plus = styled.div`
 `
 
 const Detail = styled.div`
-	/* display: none; */
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -78,17 +82,34 @@ const Detail = styled.div`
 	right: 0;
 	bottom: 0;
 	overflow: hidden;
-	/* pointer-events: none; */
 	font-size: 0;
 `
 
+const HeaderAnimation = keyframes`
+	from {
+		transform: translateY(-105%);
+	}
+	to {
+		transform: translateY(0);
+	}
+`
 const Header = styled.img`
 	position: absolute;
-	transform: translate3d(0, 0, 0);
-	transition: all 0.8s ease-out;
+	animation: ${(props) =>
+		props.theme.animationState
+			? css`${HeaderAnimation} 1s ${props.theme.direction} both`
+			: 'initial'};
 	margin: 0;
 `
 
+const DetailImageAnimation = keyframes`
+	from {
+		transform: translateY(-250%);
+	}
+	to {
+		transform: translateY(0);
+	}
+`
 const DetailImage = styled.div`
 	box-sizing: border-box;
 	position: absolute;
@@ -101,8 +122,10 @@ const DetailImage = styled.div`
 	border-radius: 50%;
 	overflow: hidden;
 	box-shadow: 4px 6px 15px 0 rgba(0, 0, 0, 0.2);
-	/* transform: translate3d(0, -250px, 0); */
-	transition: all 1s ease-in 0.2s;
+	animation: ${(props) =>
+		props.theme.animationState
+			? css`${DetailImageAnimation} 1s 0.2s ${props.theme.direction} both`
+			: 'initial'};
 
 	img {
 		width: 100%;
@@ -110,6 +133,14 @@ const DetailImage = styled.div`
 	}
 `
 
+const CloseButtonAnimation = keyframes`
+	from {
+		transform: rotate(-45deg) translateY(-250%);
+	}
+	to {
+		transform: rotate(45deg) translateY(0);
+	}
+`
 const CloseButton = styled.div`
 	position: absolute;
 	z-index: 2;
@@ -119,9 +150,12 @@ const CloseButton = styled.div`
 	right: 10px;
 	background: red;
 	border-radius: 50%;
-	transition: background 0.3s ease-in-out, transform 0.5s ease-in;
-	/* transform: rotate(45deg) translate3d(-105%, -105%, 0); */
+	transition: background 0.3s ease-in-out;
 	transform: rotate(45deg);
+	animation: ${(props) =>
+		props.theme.animationState
+			? css`${CloseButtonAnimation} .8s 0.1s ${props.theme.direction} both`
+			: 'initial'};
 	cursor: pointer;
 
 	&:before {
@@ -151,11 +185,19 @@ const CloseButton = styled.div`
 
 		&:after,
 		&:before {
-			background: $red;
+			background: red;
 		}
 	}
 `
 
+const InfoAnimation = keyframes`
+	from {
+	transform: translateY(105%);
+	}
+	to {
+		transform: translateY(0);
+	}
+`
 const Info = styled.div`
 	position: absolute;
 	box-sizing: border-box;
@@ -165,10 +207,10 @@ const Info = styled.div`
 	margin: 0;
 	bottom: 0;
 	width: 100%;
-	transition: all 1s ease-in 0.5s;
-	/* transform: ${(props) =>
-		props.active ? 'translateY(0)' : 'translateY(105%)'}; */
-	/* transition: all 0.8s ease-out; */
+	animation: ${(props) =>
+		props.theme.animationState
+			? css`${InfoAnimation} 1s ${props.theme.direction} both`
+			: 'initial'};
 `
 
 const Name = styled.div`
@@ -178,29 +220,30 @@ const Name = styled.div`
 `
 
 const ButtonGroup = styled.div`
-	margin-top: 35px;
+	margin-top: 25px;
 	text-align: center;
 `
 const Button = styled.div`
 	position: relative;
 	box-sizing: border-box;
 	display: inline-block;
-	width: 45px;
-	height: 45px;
 	border: 1px solid #fff;
 	margin: 0 20px;
 	border-radius: 50%;
 	cursor: pointer;
-	transition: all 0.2s ease-in-out;
+	padding: 8px;
 
 	&:hover {
-		background: #fff;
-		color: $red;
+		border: 2px solid #fff;
 		box-shadow: 2px 3px 6px 0 rgba(0, 0, 0, 0.2);
 	}
 `
 
 export default function Day() {
+	const [active, setActive] = useState(false)
+	const [activeProfile, setActiveProfile] = useState(0)
+	const [animationState, setAnimationState] = useState(true)
+	const [direction, setDirection] = useState('normal')
 	const profiles = [
 		{
 			img: 'https://100dayscss.com/codepen/13-1.jpg',
@@ -220,35 +263,61 @@ export default function Day() {
 		},
 	]
 	function renderProfiles() {
-		return profiles.map((profile) => (
-			<Profile key={profile.img}>
+		return profiles.map((profile, index) => (
+			<Profile
+				key={index}
+				onClick={() => {
+					setActive(true)
+					setActiveProfile(index)
+				}}
+			>
 				<img src={profile.img} alt={profile.alt} width="192px" />
 				<Overlay />
 				<Plus />
 			</Profile>
 		))
 	}
-	return (
-		<Frame>
-			{renderProfiles()}
+
+	function renderDetail() {
+		if (!active) return
+		return (
 			<Detail>
-				<CloseButton />
-				<Header src="https://100dayscss.com/codepen/13-1-header.jpg" />
-				<DetailImage>
-					<img
-						src="https://100dayscss.com/codepen/13-1.jpg"
-						alt="profile pic"
+				{/* use themeprovider to control animation of multiple components */}
+				<ThemeProvider theme={{direction, animationState}}>
+					<CloseButton
+						onClick={() => {
+							setAnimationState(true)
+							setDirection('reverse')
+						}}
 					/>
-				</DetailImage>
-				<Info active={true}>
-					<Name>Eels Web</Name>
-					<ButtonGroup>
-						<Button></Button>
-						<Button></Button>
-						<Button></Button>
-					</ButtonGroup>
-				</Info>
+					<Header src="https://100dayscss.com/codepen/13-1-header.jpg" />
+					<DetailImage
+						onAnimationEnd={() => {
+							if (direction === 'reverse') {
+								setActive(false)
+								setDirection('normal')
+							} else setAnimationState(false)
+						}}
+					>
+						<img src={profiles[activeProfile].img} alt="profile pic" />
+					</DetailImage>
+					<Info active={true}>
+						<Name>Eels Web</Name>
+						<ButtonGroup>
+							<Button as={Phone} size="42px" color="white" />
+							<Button as={Favorite} size="42px" color="white" />
+							<Button as={Chat} size="42px" color="white" />
+						</ButtonGroup>
+					</Info>
+				</ThemeProvider>
 			</Detail>
-		</Frame>
+		)
+	}
+
+	return (
+		<WhiteFrame>
+			{renderProfiles()}
+			{renderDetail()}
+		</WhiteFrame>
 	)
 }
