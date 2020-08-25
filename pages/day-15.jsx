@@ -6,6 +6,7 @@ import Frame from '../components/Frame'
 import Center from '../components/Center'
 
 import {CloudUpload} from 'grommet-icons'
+import {useState} from 'react'
 
 const MyCenter = styled(Center)`
 	width: 300px;
@@ -27,19 +28,36 @@ const Title = styled.div`
 
 const Dropzone = styled.div`
 	position: absolute;
-	/* z-index: 1; */
+	z-index: 1;
 	box-sizing: border-box;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
-	padding-bottom: 14%;
 	width: 100%;
-	height: 80%;
+	height: 50%;
 	border: 1px dashed #a4a4a4;
 	border-radius: 3px;
 	text-align: center;
 	overflow: hidden;
+`
+
+const FileName = styled.span`
+	display: block;
+	color: #676767;
+	font-size: 14px;
+	line-height: 18px;
+`
+
+const Input = styled.input`
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	width: 100%;
+	cursor: pointer;
 `
 
 const UploadButton = styled.div`
@@ -54,7 +72,6 @@ const UploadButton = styled.div`
 	line-height: 40px;
 	font-size: 14px;
 	box-shadow: 0 2px 0 0 #498c25;
-	cursor: pointer;
 	transition: all 0.2s ease-in-out;
 
 	&:hover {
@@ -63,12 +80,28 @@ const UploadButton = styled.div`
 `
 
 export default function Day() {
+	const [fileName, setFileName] = useState('')
+
+	function dragHandler(event) {
+		// console.log(event)
+		// console.log(event.dataTransfer)
+	}
+
+	function inputHandler(event) {
+		console.log(event)
+		console.log(event.target.files)
+		const file = event.target.files[0]
+		if (file) setFileName(file.name)
+	}
+
 	return (
 		<Frame>
 			<MyCenter>
 				<Title>Drop File Below To Upload</Title>
-				<Dropzone>
+				<Dropzone onDrop={dragHandler}>
 					<CloudUpload size="large" color="black" />
+					<FileName>{fileName}</FileName>
+					<Input type="file" onChange={inputHandler} />
 				</Dropzone>
 				<UploadButton>Upload File</UploadButton>
 			</MyCenter>
