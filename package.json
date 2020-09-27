@@ -1,24 +1,24 @@
 {
-	"name": "css100",
+	"name": "styled-100",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "next",
-		"build": "next build",
+		"build": "next build && next export",
 		"production": "next start"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/sarincasm/css100.git"
+		"url": "git+https://github.com/sarincasm/styled-100.git"
 	},
 	"author": "",
 	"license": "UNLICENSED",
 	"bugs": {
-		"url": "https://github.com/sarincasm/css100/issues"
+		"url": "https://github.com/sarincasm/styled-100/issues"
 	},
-	"homepage": "https://github.com/sarincasm/css100#readme",
+	"homepage": "https://github.com/sarincasm/styled-100#readme",
 	"dependencies": {
 		"grommet": "^2.12.0",
 		"grommet-icons": "^4.4.0",

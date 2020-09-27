@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import Layout from '../components/Layout'
 import Featured, {chosenKey} from '../components/Featured'
 
 const Main = styled.div`
@@ -74,15 +75,17 @@ export default function Index() {
 	))
 
 	return (
-		<Main>
-			<Title>
-				<h1>Styled 100</h1>
-			</Title>
-			<FeaturedContainer>
-				<FeaturedTitle>{'DAY ' + chosenKey}</FeaturedTitle>
-				<Featured />
-			</FeaturedContainer>
-			<LinksContainer>{links}</LinksContainer>
-		</Main>
+		<Layout>
+			<Main>
+				<Title>
+					<h1>Styled 100</h1>
+				</Title>
+				<FeaturedContainer>
+					<FeaturedTitle>{'DAY ' + chosenKey}</FeaturedTitle>
+					<Featured />
+				</FeaturedContainer>
+				<LinksContainer>{links}</LinksContainer>
+			</Main>
+		</Layout>
 	)
 }

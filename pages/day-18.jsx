@@ -2,6 +2,7 @@
 
 import styled, {keyframes} from 'styled-components'
 
+import Layout from '../components/Layout'
 import Frame from '../components/Frame'
 
 const Top = styled.div`
@@ -104,13 +105,15 @@ const Green = styled.div`
 
 export default function Day() {
 	return (
-		<Frame>
-			<Top />
-			<Bottom />
-			<Ellipse>
-				<Grey />
-				<Green />
-			</Ellipse>
-		</Frame>
+		<Layout titleFragment="Day 18 - Elastic">
+			<Frame>
+				<Top />
+				<Bottom />
+				<Ellipse>
+					<Grey />
+					<Green />
+				</Ellipse>
+			</Frame>
+		</Layout>
 	)
 }
