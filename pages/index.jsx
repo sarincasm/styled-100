@@ -66,7 +66,7 @@ const StyledA = styled.a`
 `
 
 export default function Index() {
-	const daysDone = 18
+	const daysDone = 19
 	const days = [0].concat([...Array(daysDone).keys()])
 	const links = days.map((_, index) => (
 		<Link key={index} href={`/day-${index}`} passHref>
