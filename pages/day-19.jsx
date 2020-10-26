@@ -32,6 +32,18 @@ const Label = styled.label`
 	cursor: pointer;
 `
 
+const Active = styled.div`
+position: absolute;
+	z-index: 10;
+	width: 40px;
+	height: 40px;
+	background: #fff;
+	border-radius: 50%;
+	top: 45%;
+	left: ${({left}) => left};
+	transition: left 1s ease;
+`
+
 const Background = styled.div`
 	position: absolute;
 	width: 400px;
@@ -43,7 +55,7 @@ const Background = styled.div`
 	border-right: 400px solid #1abc9c;
 	transition: all 1s ease;
 
-	&.anim-enter-done {
+	&.bg-translate-x-enter-done {
 		transform: ${({offset}) => `translateX(${offset})`};
 	}
 `
@@ -51,10 +63,23 @@ const Background = styled.div`
 export default function Day() {
 	const [selected, setSelected] = useState('check-1')
 	const [mount, setMount] = useState(true)
+	const [activeIndicatorPosition, setActiveIndicatorPosition] = useState(0)
+	const [rootLeft, setRootLeft] = useState(0)
+	
 	function handleRadio(event) {
 		setMount(false)
 		setSelected(event.target.id)
 	}
+	function recordRef(node, id) {
+		if(!node) return
+		const rect = node.getBoundingClientRect()
+		if(id === 0) {
+			setRootLeft(rect.x)
+		} else if(`check-${id}` === selected) {
+			setActiveIndicatorPosition(rect.x - rootLeft + 5)
+		}
+	}
+
 	const offset = {
 		'check-1': '0px',
 		'check-2': '-400px',
@@ -62,17 +87,17 @@ export default function Day() {
 	}
 	return (
 		<Layout titleFragment="Day 19 - Radio Slider">
-			<Frame>
+			<Frame ref={(node)=>{recordRef(node, 0)}}>
 				<Container>
 					<Radio id="check-1" onChange={handleRadio} />
-					<Label htmlFor="check-1" id="c1" />
+					<Label htmlFor="check-1" id="c1" ref={(node)=>{recordRef(node, 1)}} />
 					<Radio id="check-2" onChange={handleRadio} />
-					<Label htmlFor="check-2" id="c2" />
+					<Label htmlFor="check-2" id="c2" ref={(node)=>{recordRef(node, 2)}} />
 					<Radio id="check-3" onChange={handleRadio} />
-					<Label htmlFor="check-3" id="c3" />
+					<Label htmlFor="check-3" id="c3" ref={(node)=>{recordRef(node, 3)}} />
 				</Container>
 				<CSSTransition
-					classNames="anim"
+					classNames="bg-translate-x"
 					in={mount}
 					timeout={0}
 					onExited={() => {
@@ -81,6 +106,7 @@ export default function Day() {
 				>
 					<Background offset={offset[selected]} />
 				</CSSTransition>
+				<Active left={activeIndicatorPosition+'px'}/>
 			</Frame>
 		</Layout>
 	)
