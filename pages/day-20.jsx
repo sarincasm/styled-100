@@ -1,6 +1,6 @@
 /** @format */
 
-import styled from 'styled-components'
+import styled, {css, keyframes} from 'styled-components'
 
 import Layout from '../components/Layout'
 import Frame from '../components/Frame'
@@ -26,6 +26,36 @@ const IconDiv = styled.div`
 	z-index: 2;
 `
 
+const ButtonAnimation = keyframes`
+	10% {
+		background: #1abc9c;
+		color: transparent;
+	}
+	30%, 45% {
+		width: 10%;
+		color: transparent;
+	}
+	55% {
+		width: 10%;
+		color: transparent;
+		transform: scale(1) translate(-50%);
+	}
+	58% {
+		width: 10%;
+		color: transparent;
+		transform: scale(.5) translate(-50%);
+	}
+	59% {
+		width: 10%;
+		opacity: 0;
+		color: transparent;
+		transform: scale(0) translate(-50%);
+	}
+	100% {
+		color: transparent;
+		opacity: 1;
+	}
+`
 const Button = styled.button`
 	position: absolute;
 	bottom: 15%;
@@ -45,13 +75,23 @@ const Button = styled.button`
 		background: #1abc9c;
 		color: #fff;
 	}
+	animation: ${({animationState}) =>
+		animationState
+			? css`
+					${ButtonAnimation} 3.5s ease-in-out 2s
+			  `
+			: 'initial'};
 `
 
 export default function Day() {
 	const [status, setStatus] = useState('ready')
 
 	const Icon = status === 'ready' ? Mail : Send
-	const text = status === 'ready' ? 'Send Email' : 'Sent'
+	const text = {
+		ready: 'Send Email',
+		transition: 'Sent',
+		done: 'Reset',
+	}
 
 	return (
 		<Layout titleFragment="Day Number - Component Title">
@@ -60,7 +100,18 @@ export default function Day() {
 				<IconDiv>
 					<Icon size="xlarge" color="white" />
 				</IconDiv>
-				<Button>{text}</Button>
+				<Button
+					animationState={status === 'transition'}
+					onClick={() => {
+						if (status === 'ready') setStatus('transition')
+						else if (status === 'done') setStatus('ready')
+					}}
+					onAnimationEnd={() => {
+						setStatus('done')
+					}}
+				>
+					{text[status]}
+				</Button>
 			</Frame>
 		</Layout>
 	)
