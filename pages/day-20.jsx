@@ -1,5 +1,9 @@
 /** @format */
 
+/**
+ * https://css-tricks.com/svg-line-animation-works/
+ */
+
 import styled, {css, keyframes} from 'styled-components'
 
 import Layout from '../components/Layout'
@@ -189,7 +193,7 @@ export default function Day() {
 	}
 
 	return (
-		<Layout titleFragment="Day Number - Component Title">
+		<Layout titleFragment="Day 20 - Send Mail">
 			<Frame>
 				<Circle animationState={status !== 'ready'} />
 				<OuterCircle animationState={status !== 'ready'} />
