@@ -10,7 +10,7 @@ const MyDiv = styled.div``
 
 export default function Day() {
 	return (
-		<Layout titleFragment="Day Number - Component Title">
+		<Layout titleFragment="Day <%=dayNumber%> - <%=componentTitle%>">
 			<Frame>
 				<Center>
 					<MyDiv />

@@ -12,6 +12,12 @@ npm install
 npm start
 ```
 
+## Generator CLI
+
+Use this to generate boilerplate to start developing a new component
+
+![Generate Script](docs/generate.jpg)
+
 ## Deploying
 
 ```

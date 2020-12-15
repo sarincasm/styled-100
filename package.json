@@ -7,7 +7,8 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "next",
 		"build": "next build && next export",
-		"production": "next start"
+		"production": "next start",
+		"generate": "node generator-script.js"
 	},
 	"repository": {
 		"type": "git",
@@ -31,6 +32,9 @@
 		"styled-components": "^5.1.0"
 	},
 	"devDependencies": {
-		"babel-plugin-styled-components": "^1.10.7"
+		"babel-plugin-styled-components": "^1.10.7",
+		"fs-extra": "^9.0.1",
+		"lodash": "^4.17.20",
+		"prompts": "^2.4.0"
 	}
 }
