@@ -19,6 +19,14 @@ export default function Layout({children, fullTitle, titleFragment}) {
 					name="viewport"
 					content="initial-scale=1.0, width=device-width"
 				/>
+				<style>{`
+				body {
+					margin: 0;
+					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+					line-height: 24px;
+					font-size: 18px;
+				}
+				`}</style>
 			</Head>
 			{children}
 		</>
