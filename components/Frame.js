@@ -14,7 +14,7 @@ const Frame = styled.div`
 	border-radius: 25px;
 	box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.3);
 	overflow: hidden;
-	background: ${FrameColor};
+	background: ${({background}) => background || FrameColor};
 	color: #fff;
 `
 
