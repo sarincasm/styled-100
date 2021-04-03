@@ -1,4 +1,6 @@
 /** @format */
+import {useState} from 'react'
+import {CSSTransition} from 'react-transition-group'
 
 import styled from 'styled-components'
 
@@ -56,6 +58,11 @@ const ListItem = styled.li`
 	padding: 1% 0;
 	flex-basis: auto;
 	justify-content: space-between;
+	transition: opacity 1s;
+
+	&.done-enter-done {
+		opacity: 0.4;
+	}
 `
 const Checkbox = styled.input`
 	display: none;
@@ -65,6 +72,9 @@ const ItemText = styled.label`
 	text-align: left;
 	flex: 1 1 auto;
 	padding-left: 5%;
+	${ListItem}.done-enter-done & {
+		text-decoration: line-through;
+	}
 `
 const ItemButton = styled.label`
 	position: relative;
@@ -77,6 +87,20 @@ const ItemButton = styled.label`
 	border: 1px solid ${FONTCOLOR};
 	border-radius: 50%;
 	transition: all 0.4s ease-out 0.5s;
+`
+const CheckMark = styled.svg`
+	position: absolute;
+	top: 8px;
+	stroke: ${FONTCOLOR};
+	fill: none;
+	stroke-width: 1.5;
+	stroke-dasharray: 30 30;
+	stroke-dashoffset: 30;
+	transition: all 0.5s ease-out;
+
+	${ListItem}.done-enter-done & {
+		stroke-dashoffset: 0;
+	}
 `
 
 export default function Day() {
@@ -108,21 +132,40 @@ export default function Day() {
 			text: 'Dinner with me',
 		},
 	]
+
+	const [done, setDone] = useState(schedule.map(() => false))
+
 	function renderScheduleItems() {
 		return schedule.map(({text}, index) => (
-			<ListItem key={index}>
-				<Checkbox
-					type="checkbox"
-					id={`item-${index}`}
-					name={`item-${index}`}
-				/>
-				<ItemButton for={`item-${index}`} />
-				<ItemText for={`item-${index}`}>{text}</ItemText>
-			</ListItem>
+			<CSSTransition
+				key={index}
+				classNames="done"
+				in={done[index]}
+				timeout={0}
+			>
+				<ListItem
+					onClick={() => {
+						done[index] = !done[index]
+						setDone(Array.from(done))
+					}}
+				>
+					<Checkbox
+						type="checkbox"
+						id={`item-${index}`}
+						name={`item-${index}`}
+						onClick={(e) => e.stopPropagation()}
+					/>
+					<CheckMark width="15px" height="10px">
+						<polyline points="1,5 6,9 14,1" />
+					</CheckMark>
+					<ItemButton htmlFor={`item-${index}`} />
+					<ItemText htmlFor={`item-${index}`}>{text}</ItemText>
+				</ListItem>
+			</CSSTransition>
 		))
 	}
 	return (
-		<Layout titleFragment="Day 27 - Checklist">
+		<Layout titleFragment="Day 27 - My Schedule">
 			<MyFrame>
 				<Card>
 					<Head>

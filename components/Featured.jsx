@@ -18,6 +18,7 @@ const featuredComponents = {
 	21: dynamic(() => import('../pages/day-21')),
 	22: dynamic(() => import('../pages/day-22')),
 	23: dynamic(() => import('../pages/day-23')),
+	27: dynamic(() => import('../pages/day-27')),
 }
 
 const featuredDays = Object.keys(featuredComponents)
