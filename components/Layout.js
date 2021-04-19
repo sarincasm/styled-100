@@ -6,6 +6,18 @@
 
 import Head from 'next/head'
 
+const meta = {
+	title: 'Styled 100',
+	short: 'The CSS 100 Challenge implemented with styled-components.',
+	url: 'https://styled-100.netlify.app/',
+	twitterSite: process.env.NEXT_PUBLIC_TWITTER_SITE,
+}
+const auData = {
+	src: process.env.NEXT_PUBLIC_AU_SRC,
+	server: process.env.NEXT_PUBLIC_AU_SERVER,
+	domainId: process.env.NEXT_PUBLIC_AU_DOMAIN_ID,
+}
+
 export default function Layout({children, fullTitle, titleFragment}) {
 	let title = 'Styled 100'
 	if (fullTitle) title = fullTitle
@@ -19,6 +31,17 @@ export default function Layout({children, fullTitle, titleFragment}) {
 					name="viewport"
 					content="initial-scale=1.0, width=device-width"
 				/>
+				<script
+					async
+					src={auData.src}
+					data-ackee-server={auData.server}
+					data-ackee-domain-id={auData.domainId}
+				></script>
+				<meta property="og:title" content={meta.title} />
+				<meta property="og:description" content={meta.short} />
+				<meta name="description" content={meta.short} />
+				<meta property="og:url" content={meta.url} />
+				<meta name="twitter:site" content={meta.twitterSite} />
 				<style>{`
 				body {
 					margin: 0;
