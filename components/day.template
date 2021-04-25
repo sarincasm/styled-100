@@ -6,16 +6,21 @@ import Layout from '../components/Layout'
 import Frame from '../components/Frame'
 import Center from '../components/Center'
 
+const BG_COLOR = '#DD3C54'
+const MyFrame = styled(Frame)`
+	background: ${BG_COLOR};
+`
+
 const MyDiv = styled.div``
 
 export default function Day() {
 	return (
 		<Layout titleFragment="Day <%=dayNumber%> - <%=componentTitle%>">
-			<Frame>
+			<MyFrame>
 				<Center>
 					<MyDiv />
 				</Center>
-			</Frame>
+			</MyFrame>
 		</Layout>
 	)
 }
