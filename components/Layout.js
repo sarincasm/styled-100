@@ -5,6 +5,7 @@
  */
 
 import Head from 'next/head'
+import Script from 'next/script'
 
 const meta = {
 	title: 'Styled 100',
@@ -31,12 +32,6 @@ export default function Layout({children, fullTitle, titleFragment}) {
 					name="viewport"
 					content="initial-scale=1.0, width=device-width"
 				/>
-				<script
-					async
-					src={auData.src}
-					data-ackee-server={auData.server}
-					data-ackee-domain-id={auData.domainId}
-				></script>
 				<meta property="og:title" content={meta.title} />
 				<meta property="og:description" content={meta.short} />
 				<meta name="description" content={meta.short} />
@@ -51,6 +46,12 @@ export default function Layout({children, fullTitle, titleFragment}) {
 				}
 				`}</style>
 			</Head>
+			<Script
+				async
+				src={auData.src}
+				data-ackee-server={auData.server}
+				data-ackee-domain-id={auData.domainId}
+			></Script>
 			{children}
 		</>
 	)
